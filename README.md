@@ -9,4 +9,4 @@
 | Tomate | | | | 
 | Pomme de terre | | | | 
 | Saumon d'élevage | | | | 
-| Lait | | | | 
+| Lait | Achat par les consommateurs en millions d'euros https://www.agencebio.org/vos-outils/les-chiffres-cles/observatoire-de-la-consommation-bio/ | | | 
