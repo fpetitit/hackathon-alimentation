@@ -99,5 +99,5 @@ production saumon France : https://saumonfrance.fr/les-conditions-delevage/
 | Blé | https://www.franceagrimer.fr/fam/content/download/70469/document/FICHE_FILIERE_CEREALES_BIO_2023.pdf?version=7 | | | 
 | Tomate |https://www.grab.fr/production-bio-de-tomate/ | | |  
 | Pomme de terre | | | | 
-| Saumon d'élevage | | | | 
+| Saumon d'élevage |https://www.sante-et-nutrition.com/saumon-sauvage-bio/ | | | 
 | Lait | Achat par les consommateurs en millions d'euros https://www.agencebio.org/vos-outils/les-chiffres-cles/observatoire-de-la-consommation-bio/ | | https://www.produire-bio.fr/wp-content/uploads/2019/06/ETUDE_Filieres-lait-bio-en-Europe_oct2017_IDELE_DEE-482.pdf | 
