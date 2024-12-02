@@ -87,6 +87,8 @@ production tomate France :https://www.planetoscope.com/fruits-legumes/1848-produ
 
 production tomate bio France : https://www.grab.fr/production-bio-de-tomate/
 
+production pomme de terre France : https://www.cnipt.fr/marches-et-etudes/production/#:~:text=en%20l%C3%A9g%C3%A8re%20hausse-,La%20production%20fran%C3%A7aise%20de%20pommes%20de%20terre%20de%20conservation%20s,la%20moyenne%20sur%205%20ans.&text=%C3%A0%20la%20demande-,La%20production%20fran%C3%A7aise%20de%20pommes%20de%20terre%20de%20conservation%20s,de%206%20%25%20en%20un%20an.
+
 
 ## Données trouvées
 
