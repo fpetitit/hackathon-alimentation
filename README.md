@@ -1,5 +1,6 @@
 # hackathon-alimentation
-
+la DGCCRF a participé à une action coordonnée européenne dans le domaine des produits bio
+La DGCCRF a participé à l’action européenne OPSON VIII dont EUROPOL vient de dévoiler les résultats. Cette opération menée de décembre 2018 à avril 2019 a mobilisé les autorités de contrôle, les services de police et de douane de 72 pays pour mener des contrôles et des investigations en matière de lutte contre la fraude et la contrefaçon dans le domaine alimentaire
 
 ## Données trouvées
 
