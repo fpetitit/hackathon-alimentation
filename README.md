@@ -83,6 +83,9 @@ La France en produit environ 625.000 tonnes par an selon l’association de prod
 prod bio et non-bio en France en 2018 : https://www.quechoisir.org/actualite-legumes-bio-la-culture-de-tomates-bio-sous-serre-echauffe-les-producteurs-n67443/
 
 
+production tomate France :https://www.planetoscope.com/fruits-legumes/1848-production-de-tomates-en-france.html
+
+
 ## Données trouvées
 
 | Type | Production AB en France | Consommation en France | Export |
