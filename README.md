@@ -78,6 +78,11 @@ Le marché français de la tomate
 
 La France en produit environ 625.000 tonnes par an selon l’association de producteurs de Tomates et Concombres de France.  La culture de tomate en plein champ a quasiment disparu en France. La culture sous serre a pris le relais.
 
+# Chiffres production de tomates :
+
+prod bio et non-bio en France en 2018 : https://www.quechoisir.org/actualite-legumes-bio-la-culture-de-tomates-bio-sous-serre-echauffe-les-producteurs-n67443/
+
+
 ## Données trouvées
 
 | Type | Production AB en France | Consommation en France | Export |
