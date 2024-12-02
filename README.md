@@ -85,6 +85,8 @@ prod bio et non-bio en France en 2018 : https://www.quechoisir.org/actualite-leg
 
 production tomate France :https://www.planetoscope.com/fruits-legumes/1848-production-de-tomates-en-france.html
 
+production tomate bio France : https://www.grab.fr/production-bio-de-tomate/
+
 
 ## Données trouvées
 
