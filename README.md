@@ -3,7 +3,7 @@
 
 ## Données trouvées
 
-|| Type || Production AB en France  || Consommation en France || Export ||
+| Type | Production AB en France | Consommation en France | Export |
 | -------- | ------- | -------- | ------- |
 | Blé | | | | 
 | Tomate | | | | 
