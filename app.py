@@ -1,15 +1,28 @@
 import streamlit as st
-from national_tomate import get_list_tomate
+from national_tomate import get_list_tomate_nat
+from regional_tomate import get_list_tomate_dep
 import plotly.graph_objects as go
 import plotly.express as px
 
-df = get_list_tomate()
-df = df.groupby(["flux", "annee", "nc8_code"], as_index=False).sum()
 
+# NATIONAL
+st.header("National")
+
+df = get_list_tomate_nat()
+fig_par_pays = px.line(df, x="annee", y="masse_kg", color="pays")
+
+df = df.groupby(["flux", "annee", "nc8_code"], as_index=False).sum()
 fig = px.line(df, x="annee", y="masse_kg")
 
+st.plotly_chart(fig_par_pays)
 st.plotly_chart(fig)
 
-st.table(df)
 
-st.write("Hello world")
+# REGIONAL
+st.header("Regional")
+
+df = get_list_tomate_dep()
+fig_par_pays = px.line(df, x="annee", y="masse_kg", color=["pays", "departement"])
+
+
+st.plotly_chart(fig_par_pays)

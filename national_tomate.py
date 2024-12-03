@@ -26,8 +26,8 @@ A129_COLUMNS_TYPES = {
     "code":"string",
     "a129":"string"
 }
-IMPORT_COLUMNS_NAME = ["flux", "mois", "annee", "cpf6_code", "a129_code", "nc8_code", "pays_code", "valeur_euro", "masse_kg","usup",]
-IMPORT_COLUMNS_TYPES = {
+DATA_COLUMNS_NAME = ["flux", "mois", "annee", "cpf6_code", "a129_code", "nc8_code", "pays_code", "valeur_euro", "masse_kg","usup",]
+DATA_COLUMNS_TYPES = {
     "flux" : "string", 
     "mois" : "Int64",
     "annee" : "Int64",
@@ -40,37 +40,37 @@ IMPORT_COLUMNS_TYPES = {
     "usup" : "Int64"
 }
 
-def read_data(path, col_names, col_types, sep=";", header=None, encoding="latin-1"):
+def read_data(path, col_names, col_types, sep=";", header=None, encoding="utf-8"):
     return pd.read_csv(path, sep=sep, names=col_names, dtype=col_types, header=header, encoding=encoding)
    
 def get_data_per_year(year):
     df_a129 = read_data(
         "data/libelle_a129.txt", 
         col_names=A129_COLUMNS_NAME, 
-        col_types=A129_COLUMNS_TYPES,
-        encoding="utf-8"
+        col_types=A129_COLUMNS_TYPES
         )
     df_cpf6 = read_data(
         "data/libelle_cpf6.txt", 
         col_names=CPF6_COLUMNS_NAME, 
-        col_types=CPF6_COLUMNS_TYPES
+        col_types=CPF6_COLUMNS_TYPES,
+        encoding="latin-1"
         )
     df_nc8 = read_data(
         f"data/Libelle_NC8_20{year}.txt", 
         col_names=NC8_COLUMNS_NAME,
         col_types=NC8_COLUMNS_TYPES,
-        header=0
+        header=0,
+        encoding="latin-1"
     )
     df_pays = read_data(
         "data/libelle_pays.txt",
         col_names=PAYS_COLUMNS_NAME,
-        col_types=PAYS_COLUMNS_TYPES,
-        encoding="utf-8"
+        col_types=PAYS_COLUMNS_TYPES
     )
     df = read_data(
         f"data/National_20{year}_Import.txt",
-        col_names=IMPORT_COLUMNS_NAME,
-        col_types=IMPORT_COLUMNS_TYPES
+        col_names=DATA_COLUMNS_NAME,
+        col_types=DATA_COLUMNS_TYPES
     )
 
     print("filtering on tomatoe code...")
@@ -90,7 +90,7 @@ def get_data_per_year(year):
     trunc_merged_df = merged_df[KEEPING_COLUMNS_NAME]
     return trunc_merged_df.groupby(["flux", "annee", "nc8_code", "pays"], as_index=False).sum()
 
-def get_list_tomate():
+def get_list_tomate_nat():
     df_final = pd.DataFrame()
     year_list = []
     for year in range(18,24):
@@ -103,5 +103,5 @@ def get_list_tomate():
 
 
 if __name__ == "__main__":
-    get_list_tomate()
+    get_list_tomate_nat()
 
