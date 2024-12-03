@@ -38,7 +38,7 @@ st.plotly_chart(fig)
 
 # CONSOMMATION 
 
-st.subheader("Consommation de tomates étrangères en France")
+#st.subheader("Consommation de tomates étrangères en France")
 
 def plot_quantities_by_country(df, label_col='label', quantity_col='quantite', title="Quantités par pays d'origine de 2018 à 2023"):
     df_grouped = df.groupby('pays', as_index=False)[quantity_col].sum()
@@ -56,31 +56,51 @@ def plot_quantities_by_country(df, label_col='label', quantity_col='quantite', t
     st.plotly_chart(fig)
 
 df_conso = get_conso_tomatoes()
-plot_quantities_by_country(df_conso)
+#plot_quantities_by_country(df_conso)
 
-st.subheader("Consommation de tomates étrangères en France par an")
+#st.subheader("Consommation de tomates étrangères en France par an")
 
 def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays', quantity_col='quantite', title="Quantités par année et par pays"):
-    df_grouped = df.groupby([year_col, country_col], as_index=False)[quantity_col].sum()
 
-    fig = px.line(
-        df_grouped,
-        x=year_col,
-        y=quantity_col,
-        color=country_col,
-        markers=True,
-        title=title,
-        labels={year_col: 'Année', quantity_col: 'Quantité', country_col: 'Pays'}
-    )
+    col1, col2 = st.columns([2,2])
+    with col1 : 
+        st.subheader("Consommation de tomates étrangères en France")
+        df_grouped = df.groupby('pays', as_index=False)[quantity_col].sum()
+        fig = px.bar(
+            df_grouped,
+            x='pays',
+            y=quantity_col,
+            title=title,
+            labels={'pays': 'Pays', quantity_col: 'Quantité'},
+            text=quantity_col,
+            color='pays'
+        )
 
-    fig.update_layout(
-        xaxis_title="Année",
-        yaxis_title="Quantité",
-        legend_title="Pays",
-        title_font_size=18
-    )
+        fig.update_layout(xaxis_title="Pays", yaxis_title="Quantité")
+        st.plotly_chart(fig)
+    
+    with col2 : 
+        st.subheader("Consommation de tomates étrangères en France par an")
+        df_grouped = df.groupby([year_col, country_col], as_index=False)[quantity_col].sum()
 
-    st.plotly_chart(fig)
+        fig = px.line(
+            df_grouped,
+            x=year_col,
+            y=quantity_col,
+            color=country_col,
+            markers=True,
+            title=title,
+            labels={year_col: 'Année', quantity_col: 'Quantité', country_col: 'Pays'}
+        )
+
+        fig.update_layout(
+            xaxis_title="Année",
+            yaxis_title="Quantité",
+            legend_title="Pays",
+            title_font_size=18
+        )
+
+        st.plotly_chart(fig)
 
 
     #lissa
@@ -138,7 +158,7 @@ with col1:
             dtick=1             
         ),
         yaxis_title="Quantité",
-        title_font_size=18
+        title_font_size=14
     )
 
     st.plotly_chart(fig)
@@ -165,14 +185,14 @@ with col2:
             x=df_export_product['annee'],
             y=df_export_product['product_expo'],
             mode='lines+markers',
-            name="Approvisionnement intérieure de tomates en France",
+            name="Production de tomates francaise pour la France métropolitaine",
             line=dict(color='green'),
         )
 
     fig = go.Figure(data=[trace_conso, trace_export_product])
 
     fig.update_layout(
-        title="Quantité de tomates consommée vs approvisionnement intérieure",
+        title="Quantité de tomates consommée vs production de tomates francaise \npour la France métropolitaine",
         xaxis=dict(
             title="Année",
             tickmode='linear',  
@@ -180,7 +200,7 @@ with col2:
             dtick=1             
         ),
         yaxis_title="Quantité",
-        title_font_size=18
+        title_font_size=14
     )
 
     st.plotly_chart(fig)
