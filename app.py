@@ -4,29 +4,27 @@ from regional_tomate import get_list_tomate_dep
 from conso_tomate import get_conso_tomatoes
 import plotly.express as px 
 
+import pandas as pd
+from commerce_ext_tomate import read_data
 
-# NATIONAL
+st.header("Production et consommation de tomates")
 
-st.header("National")
+# NATIONAL 
+st.header("Importation et exportation nationale")
 
-df = get_list_tomate_nat()
-fig_par_pays = px.line(df, x="annee", y="masse_kg", color="pays")
+st.write("Importation totale des tomates en France")
 
-df = df.groupby(["flux", "annee", "nc8_code"], as_index=False).sum()
-fig = px.line(df, x="annee", y="masse_kg")
+df_nat = pd.read_csv(
+    "data/export_import_national_2018_2023.csv", 
+    sep=";",
+    header=0
+)
 
-st.plotly_chart(fig_par_pays)
+df_tot = df_nat.groupby(["flux", "annee", "nc8_code"], as_index=False).sum()
+fig = px.line(df_tot, x="annee", y="masse_kg", color="flux")
+
 st.plotly_chart(fig)
 
-
-# REGIONAL
-st.header("Regional")
-
-df = get_list_tomate_dep()
-fig_par_pays = px.line(df, x="annee", y="masse_kg", color=["pays", "departement"])
-
-
-st.plotly_chart(fig_par_pays)
 
 # CONSOMMATION 
 
