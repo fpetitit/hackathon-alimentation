@@ -8,6 +8,11 @@ import pandas as pd
 from commerce_ext_tomate import read_data
 from production_tomate import loading_product_data
 
+
+st.set_page_config( 
+	layout="wide"
+)
+
 st.title("Analyse de la production et de la consommation de la tomate en France")
 #st.header("Production et consommation de tomates")
 
