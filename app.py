@@ -43,9 +43,9 @@ st.plotly_chart(fig)
 
 # CONSOMMATION 
 
-#st.subheader("Consommation de tomates étrangères en France")
+st.header("Consommation de tomates étrangères en France")
 
-def plot_quantities_by_country(df, label_col='label', quantity_col='quantite', title="Quantités par pays d'origine de 2018 à 2023"):
+def plot_quantities_by_country(df, label_col='label', quantity_col='quantite', title="Quantités par pays d'origine de 2013 à 2023"):
     df_grouped = df.groupby('pays', as_index=False)[quantity_col].sum()
     fig = px.bar(
         df_grouped,
@@ -61,9 +61,9 @@ def plot_quantities_by_country(df, label_col='label', quantity_col='quantite', t
     st.plotly_chart(fig)
 
 df_conso = get_conso_tomatoes()
-#plot_quantities_by_country(df_conso)
+plot_quantities_by_country(df_conso)
 
-#st.subheader("Consommation de tomates étrangères en France par an")
+st.header("Consommation de tomates étrangères en France par an")
 
 def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays', quantity_col='quantite', title="Quantités par année et par pays"):
 
@@ -88,24 +88,24 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
         st.subheader("Consommation de tomates en France par an")
         df_grouped = df.groupby([year_col, country_col], as_index=False)[quantity_col].sum()
 
-        fig = px.line(
-            df_grouped,
-            x=year_col,
-            y=quantity_col,
-            color=country_col,
-            markers=True,
-            title=title,
-            labels={year_col: 'Année', quantity_col: 'Quantité', country_col: 'Pays'}
-        )
+    fig = px.line(
+        df_grouped,
+        x=year_col,
+        y=quantity_col,
+        color=country_col,
+        markers=True,
+        title=title,
+        labels={year_col: 'Année', quantity_col: 'Quantité', country_col: 'Pays'}
+    )
 
-        fig.update_layout(
-            xaxis_title="Année",
-            yaxis_title="Quantité",
-            legend_title="Pays",
-            title_font_size=18
-        )
+    fig.update_layout(
+        xaxis_title="Année",
+        yaxis_title="Quantité",
+        legend_title="Pays",
+        title_font_size=18
+    )
 
-        st.plotly_chart(fig)
+    st.plotly_chart(fig)
 
 
     #lissa
@@ -116,14 +116,12 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
 
     list_pays = set(df_mix["pays"])
     for pays in list_pays :
-        st.subheader(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
-        col1, col2 = st.columns([2,2])
-        with col1:
-            fig_line = px.line(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux")
-            st.plotly_chart(fig_line, use_container_width=True)
-        with col2:
-            fig_bar = px.bar(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux", barmode="group")
-            st.plotly_chart(fig_bar, use_container_width=True)
+        st.write(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
+        fig = px.line(df_mix.loc[df_mix["pays"]==pays], x="annee", y="masse_kg", color="flux")
+        st.plotly_chart(fig)
+
+        fig_bar = px.bar(df_mix.loc[df_mix["pays"]==pays], x="annee", y="masse_kg", color="flux", barmode="group")
+        st.plotly_chart(fig_bar)
 
 
 plot_quantities_by_year_and_country(df_conso)
@@ -146,7 +144,7 @@ with col1:
 
     trace_export = go.Scatter(
             x=product['annee'],
-            y=product['quantite'],
+            y=product['masse_tonne'],
             mode='lines+markers',
             name="Production de tomates en France",
             line=dict(color='green'),
@@ -175,7 +173,7 @@ with col2:
 
 
     df_export_product = product.merge(df_export, left_on='annee', right_on='annee')
-    df_export_product['product_expo'] = df_export_product['quantite'] - df_export_product['masse_tonnes']
+    df_export_product['product_expo'] = df_export_product['masse_tonne'] - df_export_product['masse_tonnes']
 
 
     trace_conso = go.Scatter(
@@ -238,7 +236,3 @@ st.markdown("""
 - Kantar
 - Rapport : Agreste - élaboration FranceAgriMer
 """)
-
-
-
-
