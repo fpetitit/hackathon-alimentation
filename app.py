@@ -64,7 +64,7 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
 
     col1, col2 = st.columns([2,2])
     with col1 : 
-        st.subheader("Consommation de tomates étrangères en France")
+        st.subheader("Consommation de tomates en France")
         df_grouped = df.groupby('pays', as_index=False)[quantity_col].sum()
         fig = px.bar(
             df_grouped,
@@ -80,7 +80,7 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
         st.plotly_chart(fig)
     
     with col2 : 
-        st.subheader("Consommation de tomates étrangères en France par an")
+        st.subheader("Consommation de tomates en France par an")
         df_grouped = df.groupby([year_col, country_col], as_index=False)[quantity_col].sum()
 
         fig = px.line(
@@ -192,7 +192,7 @@ with col2:
     fig = go.Figure(data=[trace_conso, trace_export_product])
 
     fig.update_layout(
-        title="Quantité de tomates consommée vs production de tomates francaise \npour la France métropolitaine",
+        title="Quantité de tomates consommée vs production de tomates francaise pour la France métropolitaine",
         xaxis=dict(
             title="Année",
             tickmode='linear',  
@@ -205,7 +205,27 @@ with col2:
 
     st.plotly_chart(fig)
 
+### consommation au global 
 
+conso_glob = pd.read_csv('data/fruit_veg_kantar_05_22.csv')
+conso_glob_grouped = conso_glob.groupby(['annee'], as_index=False)['quantite'].sum()
+
+fig = px.line(
+            conso_glob_grouped,
+            x='annee',
+            y='quantite',
+            markers=True,
+            labels={'annee': 'Année', 'quantite': 'Quantité'}
+        )
+
+fig.update_layout(
+            title = "Consommation de tomates en France de 2005 à 2023",
+            xaxis_title="Année",
+            yaxis_title="Quantité",
+            title_font_size=18
+        )
+
+st.plotly_chart(fig)
 
 st.markdown("""
 ### Sources :
