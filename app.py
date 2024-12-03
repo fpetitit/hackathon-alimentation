@@ -11,19 +11,28 @@ from production_tomate import loading_product_data
 st.header("Production et consommation de tomates")
 
 # NATIONAL 
+pays=["France", "Espagne", "Maroc", "Italie", "Pays-Bas"]
+
 st.header("Importation et exportation nationale")
 
 st.write("Importation totale des tomates en France")
 
-df_nat = pd.read_csv(
+df_ei = pd.read_csv(
     "data/export_import_national_2018_2023.csv", 
     sep=";",
     header=0
 )
+df_wo_ip=df_ei.loc[~df_ei["pays"].isin(["France", "Espagne", "Maroc", "Italie", "Pays-Bas", "Belgique"])].groupby(["flux", "annee", "nc8_code"], as_index=False).sum()
+df_wo_ip["pays"]="Autre origine"
+
+df_w_ip = df_ei.loc[df_ei["pays"].isin(["France", "Espagne", "Maroc", "Italie", "Pays-Bas", "Belgique"])]
+df_w_ip["pays"].loc[df_w_ip["pays"]=="Pays-Bas"] = "Hollande"
+
+df_nat = pd.concat([df_wo_ip, df_w_ip])
+df_nat["pays"] = df_nat["pays"].apply(lambda x: x.upper())
 
 df_tot = df_nat.groupby(["flux", "annee", "nc8_code"], as_index=False).sum()
 fig = px.line(df_tot, x="annee", y="masse_kg", color="flux")
-
 st.plotly_chart(fig)
 
 # CONSOMMATION 
@@ -71,6 +80,22 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
     )
 
     st.plotly_chart(fig)
+
+
+    #lissa
+    df_grouped.columns = ["annee", "pays", "masse_kg"]
+    df_grouped["flux"] = "Consommation"
+    df_f = (df_nat.loc[df_nat["flux"]=="I"].groupby(["flux", "annee", "nc8_code", "pays"], as_index=False).sum())[["annee", "pays", "masse_kg", "flux"]]
+    df_mix = pd.concat([df_grouped, df_f])
+
+    list_pays = set(df_mix["pays"])
+    for pays in list_pays :
+        st.write(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
+        fig = px.line(df_mix.loc[df_mix["pays"]==pays], x="annee", y="masse_kg", color="flux")
+        st.plotly_chart(fig)
+
+        fig_bar = px.bar(df_mix.loc[df_mix["pays"]==pays], x="annee", y="masse_kg", color="flux", barmode="group")
+        st.plotly_chart(fig_bar)
 
 
 plot_quantities_by_year_and_country(df_conso)
@@ -155,3 +180,4 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig)
+
