@@ -1,6 +1,7 @@
 .DS_Store
 douane_data/ 
 agreste/
+data/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
