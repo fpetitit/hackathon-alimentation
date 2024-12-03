@@ -108,22 +108,24 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
     st.plotly_chart(fig)
 
 
-    #lissa
-    df_grouped.columns = ["annee", "pays", "masse_kg"]
-    df_grouped["flux"] = "Consommation"
-    df_f = (df_nat.loc[df_nat["flux"]=="I"].groupby(["flux", "annee", "nc8_code", "pays"], as_index=False).sum())[["annee", "pays", "masse_kg", "flux"]]
-    df_mix = pd.concat([df_grouped, df_f])
+st.write("Importation (en kg) et consommation (en quantité dont on ne connaît pas les unité)")
+df_c = df_conso[["annee", "pays", "quantite"]].groupby(["annee", "pays"], as_index=False).sum()
+df_c["flux"] = "Consommation"
+df_c.columns = ["annee", "pays", "masse_kg", "flux"]
 
-    list_pays = set(df_mix["pays"])
-    for pays in list_pays :
-        st.subheader(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
-        col1, col2 = st.columns([2,2])
-        with col1:
-            fig_line = px.line(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux")
-            st.plotly_chart(fig_line, use_container_width=True)
-        with col2:
-            fig_bar = px.bar(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux", barmode="group")
-            st.plotly_chart(fig_bar, use_container_width=True)
+df_f = (df_nat.loc[df_nat["flux"]=="I"].groupby(["flux", "annee", "nc8_code", "pays"], as_index=False).sum())[["annee", "pays", "masse_kg", "flux"]]
+df_mix = pd.concat([df_c, df_f])
+
+list_pays = set(df_mix["pays"])
+for pays in list_pays :
+    st.subheader(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
+    col1, col2 = st.columns([2,2])
+    with col1:
+        fig_line = px.line(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux")
+        st.plotly_chart(fig_line, use_container_width=True)
+    with col2:
+        fig_bar = px.bar(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux", barmode="group")
+        st.plotly_chart(fig_bar, use_container_width=True)
 
 
 plot_quantities_by_year_and_country(df_conso)
