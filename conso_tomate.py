@@ -1,7 +1,8 @@
 import re
 import pandas as pd
+import zipfile
 
-PATH_KANTAR = "/Users/emilie.greff/Downloads/Fruits_Légumes_Kantar.csv"
+PATH_KANTAR = "data/fruit_legume_kantar.csv.zip"
 YEAR_START = 2013
 YEAR_END = 2023
 AGE_GROUPS = [
@@ -13,39 +14,40 @@ AGE_GROUPS = [
 SEARCH_TERM_TOMATOES = r'^[Tt]omate.*$'
 
 COUNTRY = ['BELGIQUE', 'ESPAGNE', 'HOLLANDE', 'ITALIE', 'MAROC', 'ORIGINE']
+LABEL_COLUMN_NAME = 'label'
 
-def extract_country(label):
+def extract_country(LABEL_COLUMN_NAME):
     for country in COUNTRY:
-        if country in label:
+        if country in LABEL_COLUMN_NAME:
             return country
     return 'FRANCE'
 
-def loading_kantar_data() :
+def loading_kantar_data(PATH_KANTAR) :
   df = pd.read_csv(PATH_KANTAR , encoding='latin-1', sep = ';',low_memory=False)
   return df
 
-def cleaning_kantar_data(df):
+def cleaning_kantar_data(df, YEAR_START = 2013 , YEAR_END = 2023, age_groups=AGE_GROUPS):
   df = df.rename(columns={'Libellé_Court': 'label', 'Q_ach' : 'quantite'})
   df = df[(df.annee >= YEAR_START) & (df.annee <= YEAR_END)]
   df = df[df['geog'].isin(AGE_GROUPS)]
   return df
 
-def find_term(df, colonne='label',search_term = SEARCH_TERM_TOMATOES ):
-  resultats = df[df[colonne].str.contains(search_term, flags=re.IGNORECASE, na=False)]
+def find_term(df,search_term = SEARCH_TERM_TOMATOES ):
+  resultats = df[df[LABEL_COLUMN_NAME].str.contains(search_term, flags=re.IGNORECASE, na=False)]
   return resultats
 
-def clean_label(df, colonne='label', remplace_underscore=True, supprime_non_bio=True, remplace_espaces=True, supprime_espace_fin=True):
+def clean_label(df, remplace_underscore=True, supprime_non_bio=True, remplace_espaces=True, supprime_espace_fin=True):
     if remplace_underscore:
-        df.loc[:, colonne] = df[colonne].str.replace('_', ' ', regex=False)
+        df.loc[:, LABEL_COLUMN_NAME] = df[LABEL_COLUMN_NAME].str.replace('_', ' ', regex=False)
 
     if supprime_non_bio:
-        df.loc[:, colonne] = df[colonne].str.replace('NON BIO', '', regex=False)
+        df.loc[:, LABEL_COLUMN_NAME] = df[LABEL_COLUMN_NAME].str.replace('NON BIO', '', regex=False)
 
     if remplace_espaces:
-        df.loc[:, colonne] = df[colonne].str.replace(r'\s{2,}', ' ', regex=True)
+        df.loc[:, LABEL_COLUMN_NAME] = df[LABEL_COLUMN_NAME].str.replace(r'\s{2,}', ' ', regex=True)
 
     if supprime_espace_fin:
-        df.loc[:, colonne] = df[colonne].str.rstrip()
+        df.loc[:, LABEL_COLUMN_NAME] = df[LABEL_COLUMN_NAME].str.rstrip()
 
     return df
 
@@ -58,7 +60,7 @@ def get_conso_tomatoes():
     df = cleaning_kantar_data(df)
     df = find_term(df)
     df = clean_label(df)
-    df['pays'] = df['label'].apply(extract_country)
+    df['pays'] = df[LABEL_COLUMN_NAME].apply(extract_country)
     df['pays'] = df['pays'].replace('ORIGINE', 'AUTRE ORIGINE')
     return df 
    
