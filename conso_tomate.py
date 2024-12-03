@@ -2,7 +2,7 @@ import re
 import pandas as pd
 import zipfile
 
-PATH_KANTAR = "data/fruit_legume_kantar.csv.zip"
+PATH_KANTAR = "data/kantar_data_simplified.csv.zip"
 YEAR_START = 2013
 YEAR_END = 2023
 AGE_GROUPS = [
@@ -22,9 +22,11 @@ def extract_country(LABEL_COLUMN_NAME):
             return country
     return 'FRANCE'
 
-def loading_kantar_data(PATH_KANTAR) :
-  df = pd.read_csv(PATH_KANTAR , encoding='latin-1', sep = ';',low_memory=False)
-  return df
+def loading_kantar_data() :
+  with zipfile.ZipFile(PATH_KANTAR, "r") as f:
+      with f.open(f.namelist()[0]) as zd:
+          df = pd.read_csv(zd, encoding='latin-1', low_memory=False)
+          return df
 
 def cleaning_kantar_data(df, YEAR_START = 2013 , YEAR_END = 2023, age_groups=AGE_GROUPS):
   df = df.rename(columns={'Libellé_Court': 'label', 'Q_ach' : 'quantite'})
@@ -57,11 +59,11 @@ def clean_label(df, remplace_underscore=True, supprime_non_bio=True, remplace_es
 
 def get_conso_tomatoes(): 
     df  = loading_kantar_data()
-    df = cleaning_kantar_data(df)
-    df = find_term(df)
-    df = clean_label(df)
-    df['pays'] = df[LABEL_COLUMN_NAME].apply(extract_country)
-    df['pays'] = df['pays'].replace('ORIGINE', 'AUTRE ORIGINE')
+    #df = cleaning_kantar_data(df)
+    #df = find_term(df)
+    #df = clean_label(df)
+    #df['pays'] = df[LABEL_COLUMN_NAME].apply(extract_country)
+    #df['pays'] = df['pays'].replace('ORIGINE', 'AUTRE ORIGINE')
     return df 
    
 
