@@ -14,17 +14,17 @@ SEARCH_TERM_TOMATOES = r'^[Tt]omate.*$'
 
 COUNTRY = ['BELGIQUE', 'ESPAGNE', 'HOLLANDE', 'ITALIE', 'MAROC', 'ORIGINE']
 
-def extract_country(label, COUNTRY = COUNTRY):
+def extract_country(label):
     for country in COUNTRY:
         if country in label:
             return country
     return 'FRANCE'
 
-def loading_kantar_data(PATH_KANTAR) :
+def loading_kantar_data() :
   df = pd.read_csv(PATH_KANTAR , encoding='latin-1', sep = ';',low_memory=False)
   return df
 
-def cleaning_kantar_data(df, YEAR_START = 2013 , YEAR_END = 2023, age_groups=AGE_GROUPS):
+def cleaning_kantar_data(df):
   df = df.rename(columns={'Libellé_Court': 'label', 'Q_ach' : 'quantite'})
   df = df[(df.annee >= YEAR_START) & (df.annee <= YEAR_END)]
   df = df[df['geog'].isin(AGE_GROUPS)]
@@ -53,8 +53,8 @@ def clean_label(df, colonne='label', remplace_underscore=True, supprime_non_bio=
 #    df['BIO'] = df[colonne].apply(lambda x: 'BIO' if 'BIO' in str(x).upper() else 'NON BIO')
 #    return df
 
-def get_conso_tomatoes(PATH_KANTAR = PATH_KANTAR): 
-    df  = loading_kantar_data(PATH_KANTAR)
+def get_conso_tomatoes(): 
+    df  = loading_kantar_data()
     df = cleaning_kantar_data(df)
     df = find_term(df)
     df = clean_label(df)
