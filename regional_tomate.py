@@ -65,4 +65,3 @@ def get_list_tomate_dep(flux):
 
 if __name__ == "__main__":
     df=get_list_tomate_dep("Import")
-    print(df)

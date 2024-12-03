@@ -116,12 +116,14 @@ def plot_quantities_by_year_and_country(df, year_col='annee', country_col='pays'
 
     list_pays = set(df_mix["pays"])
     for pays in list_pays :
-        st.write(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
-        fig = px.line(df_mix.loc[df_mix["pays"]==pays], x="annee", y="masse_kg", color="flux")
-        st.plotly_chart(fig)
-
-        fig_bar = px.bar(df_mix.loc[df_mix["pays"]==pays], x="annee", y="masse_kg", color="flux", barmode="group")
-        st.plotly_chart(fig_bar)
+        st.subheader(f"Importation et consommation en France des tomates en provenance de {pays.lower()} ")
+        col1, col2 = st.columns([2,2])
+        with col1:
+            fig_line = px.line(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux")
+            st.plotly_chart(fig_line, use_container_width=True)
+        with col2:
+            fig_bar = px.bar(df_mix.loc[df_mix["pays"] == pays], x="annee", y="masse_kg", color="flux", barmode="group")
+            st.plotly_chart(fig_bar, use_container_width=True)
 
 
 plot_quantities_by_year_and_country(df_conso)
